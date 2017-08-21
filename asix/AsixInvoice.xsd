@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Asitis AB Simple Invoice XML - last updated 2012-05-03 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  
+  <xs:element name="Ledger">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Root element of document</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="false">
+      <xs:sequence minOccurs="0" maxOccurs="1">
+        <xs:element name="Invoice" type="InvoiceType" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="Credit" type="CreditType" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="productionDate" type="xs:date" use="required" />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="InvoiceType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        If any lines are defined then all invoice lines needs to be defined. The line sums must match the invoice totals.
+      </xs:documentation>
+      <xs:appinfo>
+        <xs:appinfo source="assert">sum(/LineAmountInclVAT) = number(Amount) or count(Line) = 0</xs:appinfo>
+        <xs:appinfo source="assert">sum(Line/VATAmount) = number(VATAmount) or count(Line) = 0</xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+
+    <xs:sequence>
+      <xs:element name="ClientNo"           type="NonEmptyCode20" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Action"             type="InvoiceActionType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CustLegalNo"        type="Code20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CustNo"             type="NonEmptyCode20" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Name"               type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Name2"              type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Adress"             type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Adress2"            type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PostCode"           type="Text20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="City"               type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CountryCode"        type="CountryCodeType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="InvoiceNo"          type="NonEmptyCode20" minOccurs="1" maxOccurs="1" />
+      <xs:element name="InvoiceDate"        type="RequiredDate" minOccurs="1" maxOccurs="1" />
+      <xs:element name="InvoiceDueDate"     type="RequiredDate" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Amount"             type="PositiveAmount" minOccurs="1" maxOccurs="1" />
+      <xs:element name="VATAmount"          type="PositiveAmount" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Currency"           type="CurrencyType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="OrderDate"          type="Date" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DeliveryDate"       type="Date" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PaymentRefNo"       type="Code30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="OrderNo"            type="Code20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PackageNo"          type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PartialPaymentCode" type="Code10" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PostProcessingCode" type="Code10" minOccurs="0" maxOccurs="1" />
+      
+      <xs:element name="OurRef"             type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="YourRef"            type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CustVATNo"          type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Email"              type="Text80" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DeliveryOption"     type="DeliveryOptionType" minOccurs="0" maxOccurs="1" default="0" />
+      <xs:element name="ShipName"           type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipName2"          type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipAdress"         type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipAdress2"        type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipPostCode"       type="Text20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipCity"           type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipCountryCode"    type="CountryCodeType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Language"           type="Code10" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PaymentRequestType" type="PaymentRequestTypeType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PaymentRequestId"   type="Text30" minOccurs="0" maxOccurs="1" />
+      
+      <xs:element name="Line"               type="LineType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CreditType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        If any lines are defined then all lines needs to be defined. The line sums must match credito totals.
+      </xs:documentation>
+      <xs:appinfo>
+        <xs:appinfo source="assert">sum(Line/LineAmountInclVAT) = number(Amount) or count(Line) = 0</xs:appinfo>
+        <xs:appinfo source="assert">sum(Line/VATAmount) = number(VATAmount) or count(Line) = 0</xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+
+    <xs:sequence>
+      <xs:element name="ClientNo"           type="NonEmptyCode20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CustLegalNo"        type="Code20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CustNo"             type="NonEmptyCode20" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Name"               type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Name2"              type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Adress"             type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Adress2"            type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PostCode"           type="Text20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="City"               type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CountryCode"        type="CountryCodeType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CreditNo"           type="NonEmptyCode20" minOccurs="1" maxOccurs="1" />
+      <xs:element name="CreditDate"         type="RequiredDate" minOccurs="1" maxOccurs="1" />
+      <xs:element name="CreditDueDate"      type="RequiredDate" minOccurs="1" maxOccurs="1" />
+      <xs:element name="CreditRefType"      type="CreditRefTypeType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="CreditRefNo"        type="Code30" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Amount"             type="PositiveAmount" minOccurs="1" maxOccurs="1" />
+      <xs:element name="VATAmount"          type="PositiveAmount" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Currency"           type="CurrencyType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="OrderDate"          type="Date" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DeliveryDate"       type="Date" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PaymentRefNo"       type="Code30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="OrderNo"            type="Code20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PackageNo"          type="Text30" minOccurs="0" maxOccurs="1" />
+
+      <xs:element name="OurRef"             type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="YourRef"            type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="CustVATNo"          type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Email"              type="Text80" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DeliveryOption"     type="DeliveryOptionType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipName"           type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipName2"          type="Text50" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipAdress"         type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipAdress2"        type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipPostCode"       type="Text20" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipCity"           type="Text30" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ShipCountryCode"    type="CountryCodeType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Language"           type="Code10" minOccurs="0" maxOccurs="1" />
+      
+      <xs:element name="Line"               type="LineType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="LineType">
+    <xs:annotation>
+      <xs:appinfo>
+        <xs:appinfo source="assert">(number(UnitPrice) * number(Quantity) * (1 - number(DiscountPct)/100) ) = number(LineAmountExclVAT)</xs:appinfo>
+        <xs:appinfo source="assert">(number(VATAmount) + number(LineAmountExclVAT)) = number(LineAmountInclVAT)</xs:appinfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ItemNo" type="Text20" />
+      <xs:element name="Description" type="Text80" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Description2" type="Text80" minOccurs="0" maxOccurs="1" />
+      <xs:element name="UnitOfMeasure" type="Text10" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Quantity" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+      <xs:element name="UnitPrice" type="UnitAmount" minOccurs="1" maxOccurs="1" />
+      <xs:element name="VATPct" type="Percentage" minOccurs="0" maxOccurs="1" />
+      <xs:element name="VATAmount" type="Amount" minOccurs="1" maxOccurs="1" />
+      <xs:element name="DiscountPct" type="Percentage" minOccurs="0" maxOccurs="1" />
+      <xs:element name="LineAmountExclVAT" type="Amount" minOccurs="1" maxOccurs="1" />
+      <xs:element name="LineAmountInclVAT" type="Amount" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:simpleType name="Text10">
+    <xs:restriction base="SimpleText">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Text16">
+    <xs:restriction base="SimpleText">
+      <xs:maxLength value="16"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Text20">
+    <xs:restriction base="SimpleText">
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Text30">
+    <xs:restriction base="SimpleText">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Text50">
+    <xs:restriction base="SimpleText">
+      <xs:maxLength value="50"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Text80">
+    <xs:restriction base="SimpleText">
+      <xs:maxLength value="80"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="SimpleText">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z]*" />
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:simpleType name="Code">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z0-9ÅÄÖ_-]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code10">
+    <xs:restriction base="Code">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code20">
+    <xs:restriction base="Code">
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Code30">
+    <xs:restriction base="Code">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NonEmptyCode20">
+    <xs:restriction base="Code">
+      <xs:maxLength value="20"/>
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+    
+  <xs:simpleType name="RequiredDate">
+    <xs:restriction base="xs:date">
+      <xs:minInclusive value="1800-01-01"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Date">
+    <xs:annotation>
+      <xs:documentation>Union of xs:date and empty xs:string to allow empty elements</xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="xs:date">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value=""/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="Amount">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="UnitAmount">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PositiveAmount">
+    <xs:restriction base="Amount">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Percentage">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CountryCodeType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value=""/>
+      <xs:pattern value="[A-Z][A-Z]">
+        <xs:annotation>
+          <xs:documentation>Should follow ISO 3166 (http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm)</xs:documentation>
+        </xs:annotation>
+      </xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="CurrencyType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z][A-Z][A-Z]">
+        <xs:annotation>
+          <xs:documentation>Should follow ISO 4217 (http://wikipedia.org/wiki/ISO_4217)</xs:documentation>
+        </xs:annotation>
+      </xs:pattern>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="CreditRefTypeType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>An unconnected credit</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>References a previous InvoiceNo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>References a previous OrderNo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>References a previous PackageNo</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="InvoiceActionType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>Receivers decision</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Service-ledger only</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>"F.Y.I" - receiver does not handle the invoice</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DeliveryOptionElementType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>No preference / use what system already has</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Email (preferred)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation>
+          <xs:documentation>Mail Prioritaire</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation>
+          <xs:documentation>Mail (normal)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DeliveryOptionSaveAttribType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>Devlivery option should not be use for subsequent documents, only this one (default if omitted)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Chosen delivery option should be save for further system use</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType  name="DeliveryOptionType">
+    <xs:simpleContent>
+      <xs:extension base="DeliveryOptionElementType">
+        <xs:attribute name="save" type="DeliveryOptionSaveAttribType" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="PaymentRequestTypeType">
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="0">
+        <xs:annotation>
+          <xs:documentation>No payment request</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="1">
+        <xs:annotation>
+          <xs:documentation>Autogiro</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
