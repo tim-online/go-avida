@@ -2,6 +2,8 @@ package asix
 
 import (
 	"encoding/xml"
+	"fmt"
+	"math"
 
 	"github.com/aodin/date"
 	"golang.org/x/text/currency"
@@ -9,7 +11,27 @@ import (
 
 type Amount float64
 
+func (a Amount) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	var formatted string
+	if math.Mod(float64(a), 1.0) == 0 {
+		formatted = fmt.Sprintf("%.1f", a)
+	} else {
+		formatted = fmt.Sprintf("%g", a)
+	}
+	return e.EncodeElement(formatted, start)
+}
+
 type UnitAmount float64
+
+func (a UnitAmount) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	var formatted string
+	if math.Mod(float64(a), 1.0) == 0 {
+		formatted = fmt.Sprintf("%.1f", a)
+	} else {
+		formatted = fmt.Sprintf("%g", a)
+	}
+	return e.EncodeElement(formatted, start)
+}
 
 type Code string
 
@@ -42,6 +64,16 @@ type NonEmptyCode20 string
 type Percentage float64
 
 type PositiveAmount float64
+
+func (a PositiveAmount) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	var formatted string
+	if math.Mod(float64(a), 1.0) == 0 {
+		formatted = fmt.Sprintf("%.1f", a)
+	} else {
+		formatted = fmt.Sprintf("%g", a)
+	}
+	return e.EncodeElement(formatted, start)
+}
 
 type RequiredDate struct {
 	date.Date
@@ -89,3 +121,13 @@ type SaveAttribType int
 type AccountTypeEnum int
 
 type Decimal float64
+
+func (d Decimal) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	var formatted string
+	if math.Mod(float64(d), 1.0) == 0 {
+		formatted = fmt.Sprintf("%.1f", d)
+	} else {
+		formatted = fmt.Sprintf("%g", d)
+	}
+	return e.EncodeElement(formatted, start)
+}
