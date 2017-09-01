@@ -1,6 +1,7 @@
 package asix
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"math"
@@ -79,8 +80,42 @@ type CurrencyType struct {
 	currency.Unit
 }
 
+func (c CurrencyType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.String())
+}
+
+func (c *CurrencyType) UnmarshalJSON(data []byte) error {
+	var value string
+	err := json.Unmarshal(data, &value)
+	if err != nil {
+		return err
+	}
+
+	if value == "" {
+		return nil
+	}
+
+	c.Unit, err = currency.ParseISO(value)
+	return err
+}
+
 func (c CurrencyType) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(c.String(), start)
+}
+
+func (c *CurrencyType) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var value string
+	err := d.DecodeElement(&value, &start)
+	if err != nil {
+		return err
+	}
+
+	if value == "" {
+		return nil
+	}
+
+	c.Unit, err = currency.ParseISO(value)
+	return err
 }
 
 // Not in use today.
