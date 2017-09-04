@@ -29,7 +29,7 @@ type Invoice struct {
 
 	// Customers Legal No.
 	// 1234561234
-	CustLegalNo Code20 `xml:"CustLegalNo,omitempty"`
+	CustLegalNo Code20 `xml:"CustLegalNo"`
 
 	// Customers No.
 	// C00002
@@ -45,22 +45,22 @@ type Invoice struct {
 
 	// Customers postal Adress.
 	// Dynamic road 2
-	Adress Text30 `xml:"Adress,omitempty"`
+	Adress Text30 `xml:"Adress"`
 
 	// Customers postal Adress, second line.
 	Adress2 Text30 `xml:"Adress2,omitempty"`
 
 	// Customers Postal code.
 	// 54130
-	PostCode Text20 `xml:"PostCode,omitempty"`
+	PostCode Text20 `xml:"PostCode"`
 
 	// Customers postal city.
 	// Skövde
-	City Text30 `xml:"City,omitempty"`
+	City Text30 `xml:"City"`
 
 	// Customers Country code.
 	// SE
-	CountryCode CountryCode `xml:"CountryCode,omitempty"` // description: Customers Country code.
+	CountryCode CountryCode `xml:"CountryCode"` // description: Customers Country code.
 
 	// Invoice No.
 	// F002110
@@ -80,7 +80,7 @@ type Invoice struct {
 
 	// Total VAT Amount. Always positive.
 	// 8630.25
-	VATAmount PositiveAmount `xml:"VATAmount,omitempty"` // description:
+	VATAmount PositiveAmount `xml:"VATAmount"` // description:
 
 	// Currency of Invoice
 	// SEK
@@ -100,7 +100,7 @@ type Invoice struct {
 
 	// Order Number.
 	// 002110
-	OrderNo Code20 `xml:"OrderNo,omitempty"` // description:
+	OrderNo Code20 `xml:"OrderNo"` // description:
 
 	// Package / tracking number for delivery.
 	PackageNo Text30 `xml:"PackageNo,omitempty"` // description:
@@ -115,15 +115,6 @@ type Invoice struct {
 	// Indicates if the invoice shall be posted against an account or not
 	InvoiceAccount InvoiceAccount `xml:"InvoiceAccount,omitempty"` // description:
 
-	// See Lines
-	Lines Lines `xml:"Line,omitempty"` // description:
-
-	// Optional Fields
-
-	// "Our Reference" on the document
-	// Salesperson Xy
-	OurRef Text30 `xml:"OurRef,omitempty"` // description:
-
 	// "Your Reference" on the document
 	// John Doe
 	YourRef Text30 `xml:"YourRef,omitempty"` // description:
@@ -135,6 +126,15 @@ type Invoice struct {
 	// The Customers Email
 	// john@some.where
 	Email Text80 `xml:"Email,omitempty"` // description:
+
+	// See Lines
+	Lines Lines `xml:"Line,omitempty"` // description:
+
+	// Optional Fields
+
+	// "Our Reference" on the document
+	// Salesperson Xy
+	OurRef Text30 `xml:"OurRef,omitempty"` // description:
 
 	// The Customers Phone Number
 	// 016 13 75 20
@@ -203,7 +203,7 @@ type Credit struct {
 
 	// Customers Legal No.
 	// 1234561234
-	CustLegalNo Code20 `xml:"CustLegalNo,omitempty"`
+	CustLegalNo Code20 `xml:"CustLegalNo"`
 
 	// Customers No.
 	// C00002
@@ -262,7 +262,7 @@ type Credit struct {
 
 	// Total VAT Amount. Always positive.
 	// 8630.25
-	VATAmount PositiveAmount `xml:"VATAmount,omitempty"`
+	VATAmount PositiveAmount `xml:"VATAmount"`
 
 	// Currency of Invoice
 	// SEK
@@ -281,7 +281,7 @@ type Credit struct {
 
 	// Order Number.
 	// 002110
-	OrderNo Code20 `xml:"OrderNo,omitempty"`
+	OrderNo Code20 `xml:"OrderNo"`
 
 	// Package / tracking number for delivery.
 	PackageNo Text30 `xml:"PackageNo,omitempty"`
