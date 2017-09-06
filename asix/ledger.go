@@ -7,7 +7,7 @@ import (
 type Ledger struct {
 	XMLName xml.Name `xml:"Ledger,omitempty"`
 
-	ProductionDate RequiredDate `xml:"productionDate,attr,omitempty"`
+	ProductionDate RequiredDate `xml:"productionDate,attr"`
 	Invoices       Invoices     `xml:"Invoice,omitempty"`
 	Credits        Credits      `xml:"Credit,omitempty"`
 }
@@ -68,11 +68,11 @@ type Invoice struct {
 
 	// Invoice Date
 	// 2010-02-14
-	InvoiceDate RequiredDate `xml:"InvoiceDate,omitempty"`
+	InvoiceDate RequiredDate `xml:"InvoiceDate"`
 
 	// Due Date for the Invoice
 	// 2010-03-14
-	InvoiceDueDate RequiredDate `xml:"InvoiceDueDate,omitempty"` // description: Due Date for the Invoice
+	InvoiceDueDate RequiredDate `xml:"InvoiceDueDate"` // description: Due Date for the Invoice
 
 	// Total Sum of Invoice. Always positive.
 	// 34521
@@ -88,11 +88,11 @@ type Invoice struct {
 
 	// Date when Order was made.
 	// 2010-02-10
-	OrderDate RequiredDate `xml:"OrderDate,omitempty"` // description:
+	OrderDate RequiredDate `xml:"OrderDate"` // description:
 
 	// Date then Order was delivered.
 	// 2010-02-14
-	DeliveryDate RequiredDate `xml:"DeliveryDate,omitempty"` // description:
+	DeliveryDate RequiredDate `xml:"DeliveryDate"` // description:
 
 	// Payment reference number or code.
 	// 0021108
@@ -242,19 +242,19 @@ type Credit struct {
 
 	// Credit Note Date
 	// 2010-02-14
-	CreditDate RequiredDate `xml:"CreditDate,omitempty"`
+	CreditDate RequiredDate `xml:"CreditDate"`
 
 	// Due Date for the Credit
 	// 2010-03-14
-	CreditDueDate RequiredDate `xml:"CreditDueDate,omitempty"`
+	CreditDueDate RequiredDate `xml:"CreditDueDate"`
 
 	// Ref type
 	// 0
-	CreditRefType CreditRefType `xml:"CreditRefType,omitempty"`
+	CreditRefType CreditRefType `xml:"CreditRefType"`
 
 	// Ref Identifier
 	// 12354
-	CreditRefNo Code30 `xml:"CreditRefNo,omitempty"`
+	CreditRefNo Code30 `xml:"CreditRefNo"`
 
 	// Total Sum of Invoice. Always positive.
 	// 34521
@@ -270,11 +270,11 @@ type Credit struct {
 
 	// Date when Order was made.
 	// 2010-02-10
-	OrderDate RequiredDate `xml:"OrderDate,omitempty"`
+	OrderDate RequiredDate `xml:"OrderDate"`
 
 	// Date then Order was delivered.
 	// 2010-02-14
-	DeliveryDate RequiredDate `xml:"DeliverDate,omitempty"`
+	DeliveryDate RequiredDate `xml:"DeliveryDate"`
 
 	// Payment reference number or code.
 	PaymentRefNo Code30 `xml:"PaymentRefNo,omitempty"`
@@ -341,7 +341,7 @@ type Line struct {
 
 	// VAT Amount for all Items.  7.45 Quantity * UnitPrice * (VATPct/100)
 	// 7.45
-	VATAmount Amount `xml:"VATAmount,omitempty"`
+	VATAmount Amount `xml:"VATAmount"`
 
 	// Discount in percent.
 	// 0
