@@ -219,22 +219,22 @@ type Credit struct {
 
 	// Customers postal Adress.
 	// Dynamic road 2
-	Adress Text30 `xml:"Adress,omitempty"`
+	Adress Text30 `xml:"Adress"`
 
 	// Customers postal Adress, second line.
 	Adress2 Text30 `xml:"Adress2,omitempty"`
 
 	// Customers Postal code.
 	// 54130
-	PostCode Text20 `xml:"PostCode,omitempty"`
+	PostCode Text20 `xml:"PostCode"`
 
 	// Customers postal city.
 	// Skövde
-	City Text30 `xml:"City,omitempty"`
+	City Text30 `xml:"City"`
 
 	// Customers Country code.
 	// SE
-	CountryCode CountryCode `xml:"CountryCode,omitempty"`
+	CountryCode CountryCode `xml:"CountryCode"`
 
 	// Credit Note No.
 	// F002110
@@ -274,7 +274,7 @@ type Credit struct {
 
 	// Date then Order was delivered.
 	// 2010-02-14
-	DeliveryDate RequiredDate `xml:"RequiredDate,omitempty"`
+	DeliveryDate RequiredDate `xml:"DeliverDate,omitempty"`
 
 	// Payment reference number or code.
 	PaymentRefNo Code30 `xml:"PaymentRefNo,omitempty"`
