@@ -73,6 +73,13 @@ type CountryCode string
 // 3 - References a previous PackageNo
 type CreditRefType int
 
+const (
+	CreditRefTypeNotConnected CreditRefType = 0
+	CreditRefTypeInvoiceNo    CreditRefType = 1
+	CreditRefTypeOrderNo      CreditRefType = 2
+	CreditRefTypePackageNo    CreditRefType = 3
+)
+
 // Currency Used in Invoice/CreditNote.
 // Valid format is 3 uppercase characters.
 // Should follow ISO 4217 (http://wikipedia.org/wiki/ISO_4217)
